@@ -8,7 +8,7 @@ The founder wants to ramble in the Claude or ChatGPT app (free with their subscr
 
 1. ✅ **Clean list lines, test-first (`tdd`).** `splitBrainDump` in `src/braindump.js` strips leading list markers (`1.`, `1)`, `-`, `*`, `•`), so "1. Open boligportal.dk" becomes one Step, "Open boligportal.dk", and not "1" plus a Step.
 2. ✅ **Register as a share target.** Add `share_target` to the manifest in `vite.config.js` (`GET`, `action` under the repo base, params `title`, `text`, `url`).
-3. **Receive shared text.** At start-up, if the URL has shared text, combine `text`, `title` and `url`, clear the query string with `history.replaceState`, and open the new-project flow (`#new`) with the Steps pre-split by `splitBrainDump` (not Claude: the text is already steps).
+3. ✅ **Receive shared text.** At start-up, if the URL has shared text, combine `text`, `title` and `url`, clear the query string with `history.replaceState`, and open the new-project flow (`#new`) with the Steps pre-split by `splitBrainDump` (not Claude: the text is already steps).
 4. **Name, then review.** The flow asks for the project name as usual, then goes straight to the review screen (skipping the Brain dump screen) because Steps already exist. Save and cancel work as today.
 5. **Verify.** Unit tests pass. On the production build at 390×844, opening `?text=1.%20Open%20the%20laptop%0A2.%20Find%20the%20letter` shows the name screen, then a review with two clean Steps. Then run `web-design-guidelines`.
 

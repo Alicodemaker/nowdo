@@ -9,6 +9,7 @@ import * as projects from './projects.js'
 import * as project from './project.js'
 import * as newProject from './new.js'
 import * as settings from './settings.js'
+import { sharedText } from './share.js'
 
 const root = document.getElementById('app')
 const screens = { now, projects, project, new: newProject, settings }
@@ -63,5 +64,13 @@ window.addEventListener('hashchange', () => {
 })
 // Coming back to the app: the timer may have ended and midnight may have passed.
 document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && app.render())
+
+// Opened from another app's Share menu: start a new project from that text,
+// and drop the text from the address bar so a reload doesn't start it again.
+const shared = sharedText(new URLSearchParams(location.search))
+if (shared) {
+  newProject.startFromShare(shared)
+  history.replaceState(null, '', `${location.pathname}#new`)
+}
 
 app.render()
