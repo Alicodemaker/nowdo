@@ -21,13 +21,18 @@ const csp = [
 const contentSecurityPolicy = {
   name: 'content-security-policy',
   apply: 'build',
-  transformIndexHtml: () => [
-    { tag: 'meta', attrs: { 'http-equiv': 'Content-Security-Policy', content: csp }, injectTo: 'head-prepend' },
-  ],
+  // PROTOTYPE branch only: the local-AI page must download its model from
+  // huggingface.co, so it gets no CSP. The app itself keeps the strict one.
+  transformIndexHtml: (html, ctx) =>
+    ctx.filename.endsWith('local-ai.prototype.html')
+      ? html
+      : [{ tag: 'meta', attrs: { 'http-equiv': 'Content-Security-Policy', content: csp }, injectTo: 'head-prepend' }],
 }
 
 export default defineConfig({
   base,
+  // PROTOTYPE branch only: build the throwaway local-AI page next to the app.
+  build: { rollupOptions: { input: { main: 'index.html', prototype: 'local-ai.prototype.html' } } },
   plugins: [
     contentSecurityPolicy,
     VitePWA({
@@ -54,7 +59,10 @@ export default defineConfig({
       workbox: {
         // Precache the whole build so the app works offline.
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webmanifest,woff2}'],
+        // PROTOTYPE branch only: the 6 MB local-AI engine stays out of the offline cache.
+        globIgnores: ['**/prototype-*', '**/local-ai.prototype.html'],
         navigateFallback: 'index.html',
+        navigateFallbackDenylist: [/local-ai\.prototype\.html/], // PROTOTYPE branch only
       },
     }),
   ],

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex" />
+    <title>Local AI prototype</title>
+  </head>
+  <body>
+    <!--
+      PROTOTYPE, throwaway. Lives only on branch prototype/local-ai; never merge.
+      Question: is a small AI model running inside the phone's browser good
+      enough to turn a Brain dump into tiny Steps, with no key and no cost?
+    -->
+    <main class="proto">
+      <p class="proto-flag">Prototype. Nothing here is saved.</p>
+      <h1 class="screen-title">Free AI on your phone?</h1>
+      <p class="proto-hint">This page downloads a small AI model into your browser once, then runs it on your phone with no key and no internet. Try it with a messy brain dump and compare it with the app's offline splitter.</p>
+
+      <section class="proto-card" aria-labelledby="device-title">
+        <h2 id="device-title">1. Your phone</h2>
+        <dl class="facts" id="facts"></dl>
+      </section>
+
+      <section class="proto-card" aria-labelledby="model-title">
+        <h2 id="model-title">2. Load a model</h2>
+        <label for="model">Model</label>
+        <select id="model">
+          <option value="SmolLM2-360M-Instruct-q4f16_1-MLC">SmolLM2 360M (smallest, about 200 MB)</option>
+          <option value="Qwen2.5-0.5B-Instruct-q4f16_1-MLC" selected>Qwen2.5 0.5B (about 280 MB)</option>
+          <option value="Llama-3.2-1B-Instruct-q4f16_1-MLC">Llama 3.2 1B (best, about 670 MB)</option>
+        </select>
+        <button class="button" type="button" id="load">Download and load</button>
+        <progress id="progress" max="1" value="0" hidden></progress>
+        <p class="proto-status" id="load-status" aria-live="polite">Not loaded. Use Wi-Fi: the first download is big. Next time it loads from the phone.</p>
+      </section>
+
+      <section class="proto-card" aria-labelledby="dump-title">
+        <h2 id="dump-title">3. Brain dump to steps</h2>
+        <label for="project">Project</label>
+        <input id="project" value="Do my taxes" autocomplete="off" />
+        <label for="dump">Brain dump</label>
+        <textarea id="dump" rows="5">ugh okay so taxes. I think I need the letter from skat that came in March, it's somewhere in the pile on my desk, and then log in with MitID and check if the numbers are right, my salary changed in August so probably not, and also I should ask Mads if he already did his because he knows how the deduction thing works</textarea>
+        <button class="button" type="button" id="run-steps" disabled>Turn into steps</button>
+        <div class="compare">
+          <div>
+            <h3>Local AI <span class="proto-time" id="ai-time"></span></h3>
+            <ol id="ai-steps" class="proto-list"><li class="empty">Load a model first.</li></ol>
+          </div>
+          <div>
+            <h3>Offline splitter (today's app)</h3>
+            <ol id="split-steps" class="proto-list"></ol>
+          </div>
+        </div>
+        <details><summary>Raw model answer</summary><pre id="raw"></pre></details>
+      </section>
+
+      <section class="proto-card" aria-labelledby="move-title">
+        <h2 id="move-title">4. Make it smaller</h2>
+        <label for="step">Step</label>
+        <input id="step" value="Pay the electricity bill" autocomplete="off" />
+        <button class="button" type="button" id="run-move" disabled>Suggest a first move</button>
+        <p class="proto-result" id="move-result" aria-live="polite"></p>
+      </section>
+
+      <section class="proto-card" aria-labelledby="judge-title">
+        <h2 id="judge-title">What to judge</h2>
+        <ul class="proto-list">
+          <li>Did it load at all on your phone, and how long did the first download take?</li>
+          <li>How many seconds does "Turn into steps" take after loading?</li>
+          <li>Are the AI steps clearly better than the offline splitter's? Tiny, concrete, in order?</li>
+          <li>Does the phone get hot, or the battery drop fast?</li>
+        </ul>
+      </section>
+    </main>
+    <script type="module" src="/src/local-ai.prototype.js"></script>
+  </body>
+</html>
