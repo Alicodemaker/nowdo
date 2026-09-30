@@ -132,11 +132,13 @@ export const actions = {
       stopMic()
       return app.render()
     }
+    // Text already in the box stays; this session's words go after it.
+    const before = draft.dump.trim()
     stopListening = listen({
-      onText(phrase) {
+      onText(heard) {
+        draft.dump = `${before} ${heard}`.trim()
         const box = document.getElementById('dump')
-        draft.dump = `${box.value.trim()} ${phrase.trim()}`.trim()
-        box.value = draft.dump
+        if (box) box.value = draft.dump
       },
       onInterim(text) {
         const line = document.querySelector('.interim')
