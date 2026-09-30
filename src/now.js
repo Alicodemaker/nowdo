@@ -55,7 +55,7 @@ function emptyView(state, focus) {
         ${
           finished
             ? '<button class="quiet" type="button" data-action="pick-focus">Pick your next focus</button>'
-            : '<a class="quiet" href="#projects">Start a project</a>'
+            : '<a class="quiet" href="#new">Start a project</a>'
         }
       </section>
       <div class="now-bottom">${captureButton}</div>

@@ -7,9 +7,10 @@ import { load, save } from './storage.js'
 import * as now from './now.js'
 import * as projects from './projects.js'
 import * as project from './project.js'
+import * as newProject from './new.js'
 
 const root = document.getElementById('app')
-const screens = { now, projects, project }
+const screens = { now, projects, project, new: newProject }
 
 // "#project/abc" → { name: 'project', param: 'abc' }. Unknown hashes show Now.
 function route() {
@@ -28,7 +29,7 @@ const app = {
   render() {
     const { name, param } = route()
     root.innerHTML = screens[name].view(app, param)
-    const tab = name === 'project' ? 'projects' : name
+    const tab = name === 'project' || name === 'new' ? 'projects' : name
     document.querySelectorAll('.tab').forEach((link) => {
       if (link.getAttribute('href') === `#${tab}`) link.setAttribute('aria-current', 'page')
       else link.removeAttribute('aria-current')

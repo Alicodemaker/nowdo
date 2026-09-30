@@ -28,6 +28,7 @@ export function view(app) {
     <div class="screen">
       <header class="screen-top">
         <h1 class="screen-title">Projects</h1>
+        <a class="button" href="#new">New project</a>
       </header>
       <ul class="project-list">${active.map((p) => row(state, p)).join('')}</ul>
       ${

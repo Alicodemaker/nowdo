@@ -111,7 +111,10 @@
   gap: var(--space-1);
   min-height: var(--tap-target);
   margin-left: calc(var(--space-2) * -1);
-  padding-inline: var(--space-2);
+  padding: 0 var(--space-2);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
   color: var(--color-muted);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
@@ -198,4 +201,117 @@
   .step-row:hover { background: var(--color-surface-hover); }
   .back:hover { color: var(--color-text); }
   .danger-link:hover { text-decoration: underline; }
+}
+
+/* New project: name, Brain dump, review */
+.new-form {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+.new-form .sheet-hint { margin-bottom: 0; }
+.new-form .field { margin-top: var(--space-2); }
+.new-form > .button { justify-self: stretch; margin-top: var(--space-2); }
+
+.new-form textarea {
+  width: 100%;
+  min-height: 9rem;
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-thin) solid var(--color-edge-soft);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  line-height: var(--line-height);
+  resize: vertical;
+}
+.new-form textarea::placeholder { color: var(--color-muted); }
+
+.mic-zone {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  padding-block: var(--space-4);
+}
+
+.mic {
+  display: grid;
+  place-items: center;
+  width: var(--mic-size);
+  aspect-ratio: 1;
+  border: var(--border-thick) solid var(--color-edge);
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  box-shadow: 0 calc(var(--start-depth) * 0.75) 0 var(--color-edge);
+  transform: translateY(calc(var(--start-depth) * -0.375));
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+.mic:active,
+.is-listening .mic {
+  transform: translateY(calc(var(--start-depth) * 0.375));
+  box-shadow: 0 0 0 var(--color-edge);
+}
+.is-listening .mic {
+  animation: listening var(--duration-pulse) ease-in-out infinite;
+}
+@keyframes listening {
+  50% { box-shadow: 0 0 0 var(--space-3) var(--color-track); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .is-listening .mic { animation: none; box-shadow: 0 0 0 var(--space-2) var(--color-track); }
+}
+
+.mic-hint {
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+.interim {
+  min-height: 1.5em;
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+.review-list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.review-step {
+  display: flex;
+  gap: var(--space-2);
+}
+.review-step input {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--tap-target);
+  padding: 0 var(--space-4);
+  border: var(--border-thin) solid var(--color-edge-soft);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+.remove {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--tap-target);
+  height: var(--tap-target);
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--color-muted);
+}
+.new-form > .quiet { justify-self: start; }
+
+@media (hover: hover) {
+  .mic:hover { background: var(--color-primary-hover); }
+  .remove:hover { background: var(--color-surface); color: var(--color-danger); }
 }

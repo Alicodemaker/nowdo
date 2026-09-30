@@ -129,6 +129,9 @@
 .field input::placeholder { color: var(--color-muted); }
 
 .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex: none;
   min-height: var(--tap-target);
   padding: 0 var(--space-5);
@@ -137,6 +140,7 @@
   background: var(--color-text);
   color: var(--color-bg);
   font-weight: var(--font-weight-bold);
+  text-decoration: none;
 }
 
 .visually-hidden {
