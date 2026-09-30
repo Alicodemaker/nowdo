@@ -74,11 +74,9 @@ const START_ZONE = {
 
 function startZone() {
   const zone = START_ZONE[timer.phase]
-  const elapsed = Date.now() - timer.startedAt
-  const ringStyle = timer.phase === 'running' ? ` style="animation-delay: -${elapsed}ms"` : ''
   return `
     <div class="start-zone is-${timer.phase}">
-      <div class="start-ring"${ringStyle}>
+      <div class="start-ring">
         <button class="start" type="button" data-action="${zone.action}" aria-describedby="start-hint">${zone.label}</button>
       </div>
       <p class="start-hint" id="start-hint">${zone.hint}</p>
@@ -113,6 +111,13 @@ export function view(app) {
         <button class="done" type="button" data-action="done">${icon.check} Done</button>
       </div>
     </div>`
+}
+
+// After each render: a running ring picks up where the timer is, so it never
+// restarts. Set from JS rather than a style attribute, which the CSP blocks.
+export function mounted(root) {
+  const ring = root.querySelector('.is-running .start-ring')
+  if (ring) ring.style.animationDelay = `-${Date.now() - timer.startedAt}ms`
 }
 
 export const actions = {
