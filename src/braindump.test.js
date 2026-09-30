@@ -31,3 +31,17 @@ test('words that merely contain "then" or "also" are not split', () => {
 test('an empty or filler-only dump gives no Steps', () => {
   assert.deepEqual(splitBrainDump('  um. so. \n '), [])
 })
+
+test('list markers from a pasted or shared list are dropped', () => {
+  assert.deepEqual(splitBrainDump('1. Open boligportal.dk\n2) Set a max rent\n- Save 3 listings\n* Email Anna\n• Book a viewing'), [
+    'Open boligportal.dk',
+    'Set a max rent',
+    'Save 3 listings',
+    'Email Anna',
+    'Book a viewing',
+  ])
+})
+
+test('a number that starts a Step is kept', () => {
+  assert.deepEqual(splitBrainDump('3 boxes to the basement'), ['3 boxes to the basement'])
+})
