@@ -1,11 +1,18 @@
-# appstarter
+# Do Now
 
-A starter template for mobile-first PWA web apps built with Claude Code. It contains no app yet.
+A phone-first, offline todo app for people with ADHD that makes *starting* easy: one tiny step on screen, one tap to start a 2-minute timer.
 
-- **Rules:** [AGENTS.md](AGENTS.md) is the single rules file, including the skill map. `CLAUDE.md` only points to it.
-- **Start a new app:** open a Claude Code session and say "Follow KICKOFF.md". See [KICKOFF.md](KICKOFF.md).
-- **Skills:** project-level, in `.claude/skills/` (sources in `skills-lock.json`).
-- **Run locally:** `npm install`, then `npm run dev`.
-- **Deploy:** every push to `main` deploys to GitHub Pages. One-time setup: repo **Settings → Pages → Source: GitHub Actions**.
+- **Now:** the next Step of your Focus project, with Start, Done, Make it smaller, Not now and quick capture (+).
+- **Projects:** a Brain dump, spoken or typed, turns into tiny Steps you check before saving.
+- **Claude (optional):** add your own Anthropic API key in Settings, and Claude writes the Steps and suggests first moves. Without a key or a connection, the app uses its offline rules instead.
+- **Your data** stays in this browser. Use Settings → Export backup now and then.
 
-To use it as a template, go to repo **Settings → General → Template repository**, then click **Use this template** for each new app.
+## Develop
+
+- `npm install`, then `npm run dev`
+- `npm test` runs the logic tests (Node's built-in test runner)
+- `npm run build` builds the installable PWA into `dist/`
+
+Every push to `main` deploys to GitHub Pages (one-time setup: repo **Settings → Pages → Source: GitHub Actions**).
+
+Project rules are in [AGENTS.md](AGENTS.md), the brief in [BRIEF.md](BRIEF.md), terms in [GLOSSARY.md](GLOSSARY.md) and decisions in [docs/adr/](docs/adr/).

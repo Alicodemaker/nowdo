@@ -77,6 +77,8 @@
   overflow-wrap: anywhere;
 }
 
+.step-text.is-long { font-size: var(--font-size-xl); }
+
 .step-actions {
   display: flex;
   flex-wrap: wrap;

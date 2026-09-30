@@ -6,6 +6,8 @@ import { canUseClaude, tinyFirstMove } from './claude.js'
 import { esc, toast, burst, buzz, openSheet } from './ui.js'
 
 const START_MS = 2 * 60 * 1000
+// Longer Steps get a smaller size so Start stays on screen.
+const LONG_STEP = 60
 
 // The Start timer lives in memory only. It belongs to one Step and resets
 // when Now moves on. Phases: idle → running → ask ("Keep going?") → flow.
@@ -99,7 +101,7 @@ export function view(app) {
       ${header(state, focus)}
       <section class="now-step" aria-labelledby="step-text">
         <p class="step-count">Step ${now.position} of ${now.total}</p>
-        <h1 class="step-text${isNew ? ' is-new' : ''}" id="step-text">${esc(now.step.text)}</h1>
+        <h1 class="step-text${isNew ? ' is-new' : ''}${now.step.text.length > LONG_STEP ? ' is-long' : ''}" id="step-text">${esc(now.step.text)}</h1>
         <div class="step-actions">
           <button class="quiet" type="button" data-action="smaller">Make it smaller</button>
           <button class="quiet" type="button" data-action="not-now">Not now</button>

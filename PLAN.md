@@ -12,7 +12,7 @@ We're turning the sample Now screen into the working Do Now app from `BRIEF.md`.
 4. ✅ **Projects screen.** List Projects, set the focus (the chip on Now opens the same picker), and show Finished Projects. Opening a Project lets you add a Step (a one-line field at the bottom), edit, delete and move Steps to the top, with done Steps under "Done (n)". Deleting a Project asks you to confirm. Finishing a Project brings a bigger celebration and "Pick your next focus".
 5. ✅ **Brain dump.** Creating a Project goes: name → Brain dump with a big mic button (browser speech recognition, with a keyboard-mic hint where it isn't supported) or typing → offline splitter → review list you can edit and remove from → "Save steps" → becomes the Focus project.
 6. ✅ **Settings and Claude.** Settings has the Claude API key, Export backup and Import backup (with confirmation). With a key and a connection, the Brain dump is turned into tiny Steps by Claude, and Make it smaller gets one tailored first move. Without either, the app falls back quietly to the offline behaviour. Use the `claude-api` skill for the request details.
-7. **Ship check.** Add a Do Now app icon, then run `webapp-testing` at 390×844 and `web-design-guidelines` on every screen. Check offline in airplane mode, deploy to GitHub Pages, and install it on the phone.
+7. ✅ **Ship check.** Add a Do Now app icon, then run `webapp-testing` at 390×844 and `web-design-guidelines` on every screen. Check offline in airplane mode, deploy to GitHub Pages, and install it on the phone.
 
 ## What we're NOT doing
 

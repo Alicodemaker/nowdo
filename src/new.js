@@ -27,7 +27,7 @@ function nameView() {
     <div class="screen">
       ${cancel}
       <form class="new-form" data-form="name">
-        <label class="screen-title" for="project-name">What’s the project?</label>
+        <h1 class="screen-title"><label for="project-name">What’s the project?</label></h1>
         <p class="sheet-hint">A few words is plenty, like “Do my taxes”.</p>
         <div class="field">
           <input id="project-name" name="name" autocomplete="off" enterkeyhint="next" maxlength="80" value="${esc(draft.name)}" placeholder="Do my taxes…" />
@@ -55,7 +55,7 @@ function dumpView() {
               </div>`
             : '<p class="mic-hint">To talk instead of typing, tap the mic on your keyboard.</p>'
         }
-        <textarea id="dump" name="dump" rows="6" placeholder="I need to find the papers, then log in to skat.dk…">${esc(draft.dump)}</textarea>
+        <textarea id="dump" name="dump" rows="6" placeholder="What needs doing, what’s in the way, what comes first…">${esc(draft.dump)}</textarea>
         <p class="interim" aria-hidden="true"></p>
         <button class="button" type="submit">Turn into steps</button>
       </form>
