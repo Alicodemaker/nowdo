@@ -45,6 +45,13 @@ export default defineConfig({
         // Keep in sync with --color-bg (light) in src/theme.css
         background_color: '#f6f3fb',
         theme_color: '#f6f3fb',
+        // Lists Do Now in Android's Share menu. Shared text arrives as
+        // ?title=…&text=…&url=… and opens the new-project flow (src/share.js).
+        share_target: {
+          action: base,
+          method: 'GET',
+          params: { title: 'title', text: 'text', url: 'url' },
+        },
         icons: [
           { src: 'icon-192.png', sizes: '192x192', type: 'image/png' },
           { src: 'icon-512.png', sizes: '512x512', type: 'image/png' },

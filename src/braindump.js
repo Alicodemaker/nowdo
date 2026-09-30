@@ -6,6 +6,8 @@ const CONNECTOR = /\s*,?\s*\b(?:and then|after that|and also|then)\b\s*/i
 const LEADING_FILLER =
   /^(?:so|um+|uh+|okay|ok|like|well|and|also|first|i need to|i have to|i should|i gotta|i must|i want to)\b[\s,]*/i
 const TRAILING_PUNCTUATION = /[\s.!?,;]+$/
+// "1. ", "2) ", "- ", "* ", "• " from a pasted or shared list.
+const LIST_MARKER = /^\s*(?:\d+[.)]|[-*•])\s+/
 
 function tidy(chunk) {
   let text = chunk.replace(TRAILING_PUNCTUATION, '').trim()
@@ -20,6 +22,7 @@ function tidy(chunk) {
 export function splitBrainDump(text) {
   return (text ?? '')
     .split(/\n+/)
+    .map((line) => line.replace(LIST_MARKER, ''))
     .flatMap((line) => line.split(SENTENCE_END))
     .flatMap((sentence) => sentence.split(CONNECTOR))
     .map(tidy)

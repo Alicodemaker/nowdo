@@ -8,6 +8,12 @@ import { esc, toast } from './ui.js'
 // The draft lives in memory, so switching tabs mid-way keeps it.
 const emptyDraft = () => ({ stage: 'name', name: '', dump: '', steps: [] })
 let draft = emptyDraft()
+
+// Text shared from another app: its lines are already steps, so split them
+// offline. The text stays as the Brain dump in case they want to go back.
+export function startFromShare(text) {
+  draft = { ...emptyDraft(), dump: text, steps: splitBrainDump(text) }
+}
 let stopListening = null
 let micMessage = ''
 
@@ -121,6 +127,11 @@ export const actions = {
     const name = form.elements.name.value.trim()
     if (!name) return form.elements.name.focus()
     draft.name = name
+    // Shared text already has its steps: go straight to checking them.
+    if (draft.steps.length) {
+      draft.stage = 'review'
+      return app.render()
+    }
     draft.stage = 'dump'
     app.render()
     document.getElementById('dump').focus()
