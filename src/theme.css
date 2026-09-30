@@ -28,12 +28,15 @@
   /* Colours */
   --color-bg: #f6f3fb;          /* lilac-white page */
   --color-surface: #ebe4f5;     /* chips, quiet buttons, tab bar */
+  --color-surface-hover: #ddd3ec;
   --color-text: #2b1747;        /* plum ink */
   --color-muted: #625379;       /* secondary text, 6.3:1 on bg */
   --color-primary: #ffc23d;     /* marigold: Start, and only Start */
+  --color-primary-hover: #ffcd5e;
   --color-on-primary: #2b1747;
   --color-edge: #2b1747;        /* outline + pressed-depth of Start */
   --color-success: #0f7d57;     /* done, timer ring */
+  --color-success-hover: #0b6b4a;
   --color-on-success: #ffffff;
   --color-track: #ddd3ec;       /* empty timer ring */
   --color-focus: #6a3df0;       /* keyboard focus ring */
@@ -91,10 +94,12 @@
   :root {
     --color-bg: #1b1230;
     --color-surface: #2a1d45;
+    --color-surface-hover: #382857;
     --color-text: #f3eeff;
     --color-muted: #b4a8cc;
     --color-edge: #0a0614;
     --color-success: #3fe0a6;
+    --color-success-hover: #6be9bb;
     --color-on-success: #10301f;
     --color-track: #34264f;
     --color-focus: #b39bff;
