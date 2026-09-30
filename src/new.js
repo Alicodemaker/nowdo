@@ -127,6 +127,11 @@ export const actions = {
     const name = form.elements.name.value.trim()
     if (!name) return form.elements.name.focus()
     draft.name = name
+    // Shared text already has its steps: go straight to checking them.
+    if (draft.steps.length) {
+      draft.stage = 'review'
+      return app.render()
+    }
     draft.stage = 'dump'
     app.render()
     document.getElementById('dump').focus()
