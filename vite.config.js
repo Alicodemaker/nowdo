@@ -14,16 +14,16 @@ export default defineConfig({
       injectRegister: 'auto',
       includeAssets: ['icon.svg'],
       manifest: {
-        name: 'App Starter',
-        short_name: 'Starter',
-        description: 'Mobile-first PWA starter',
+        name: 'Do Now',
+        short_name: 'Do Now',
+        description: 'One tiny step, one tap to start.',
         start_url: base,
         scope: base,
         display: 'standalone',
         orientation: 'portrait',
-        // Keep in sync with --color-bg / --color-primary in src/theme.css
-        background_color: '#ffffff',
-        theme_color: '#1f6feb',
+        // Keep in sync with --color-bg (light) in src/theme.css
+        background_color: '#f6f3fb',
+        theme_color: '#f6f3fb',
         icons: [
           { src: 'icon-192.png', sizes: '192x192', type: 'image/png' },
           { src: 'icon-512.png', sizes: '512x512', type: 'image/png' },

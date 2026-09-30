@@ -1,0 +1,211 @@
+/* Now screen. One Step, one big Start. Values come from theme.css only. */
+
+.now {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding: var(--space-4) var(--space-5);
+  padding-top: max(var(--space-4), env(safe-area-inset-top));
+  padding-bottom: calc(var(--tabbar-height) + env(safe-area-inset-bottom) + var(--space-4));
+  padding-left: max(var(--space-5), env(safe-area-inset-left));
+  padding-right: max(var(--space-5), env(safe-area-inset-right));
+}
+
+/* Top row: which project, and how many steps today */
+.now-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.project-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: var(--tap-target);
+  max-width: 65%;
+  padding: 0 var(--space-3) 0 var(--space-4);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+}
+.project-chip span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.project-chip svg { flex: none; }
+
+.today {
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+}
+.today strong {
+  color: var(--color-text);
+  font-weight: var(--font-weight-bold);
+}
+
+/* The Step itself: the headline of the screen */
+.now-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-3);
+  padding-block: var(--space-8);
+}
+
+.step-count {
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+}
+
+.step-text {
+  font-size: var(--font-size-step);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.step-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.quiet {
+  min-height: var(--tap-target);
+  padding: 0 var(--space-4);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Start: the arcade button. The ring around it becomes the 2-minute timer. */
+.start-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding-bottom: var(--space-6);
+}
+
+.start-ring {
+  --ring-fill: calc(var(--progress) * 1turn);
+  padding: var(--ring-gap);
+  border-radius: 50%;
+  background: conic-gradient(var(--color-success) var(--ring-fill), var(--color-track) 0);
+}
+
+.start {
+  display: grid;
+  place-items: center;
+  width: var(--start-size);
+  aspect-ratio: 1;
+  border: var(--border-thick) solid var(--color-edge);
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-tight);
+  box-shadow: 0 var(--start-depth) 0 var(--color-edge);
+  transform: translateY(calc(var(--start-depth) * -0.5));
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+.start:active {
+  transform: translateY(calc(var(--start-depth) * 0.5));
+  box-shadow: 0 0 0 var(--color-edge);
+}
+
+.start-zone.is-running .start-ring {
+  animation: start-countdown var(--duration-start) linear forwards;
+}
+.start-zone.is-running .start {
+  transform: translateY(calc(var(--start-depth) * 0.25));
+  box-shadow: 0 calc(var(--start-depth) * 0.25) 0 var(--color-edge);
+}
+
+@keyframes start-countdown {
+  to { --progress: 1; }
+}
+
+.start-hint {
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+}
+
+/* Bottom row: quick capture and Done */
+.now-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.capture {
+  display: grid;
+  place-items: center;
+  width: var(--tap-target);
+  height: var(--tap-target);
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-surface);
+}
+
+.done {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap-target);
+  padding: 0 var(--space-5);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-success);
+  color: var(--color-on-success);
+  font-weight: var(--font-weight-bold);
+}
+
+/* Tab bar */
+.tabbar {
+  position: fixed;
+  inset: auto 0 0 0;
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-5);
+  padding-bottom: max(var(--space-2), env(safe-area-inset-bottom));
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-surface);
+}
+
+.tab {
+  flex: 1;
+  max-width: calc(var(--content-max) / 2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-height: var(--tabbar-height);
+  margin-block: calc(var(--space-2) * -1);
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+  text-decoration: none;
+}
+.tab[aria-current='page'] {
+  color: var(--color-text);
+  font-weight: var(--font-weight-bold);
+}
