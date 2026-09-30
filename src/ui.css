@@ -62,6 +62,12 @@
   background: var(--color-primary);
   animation: burst-out var(--duration-burst) var(--ease-out) forwards;
 }
+.burst.is-big span {
+  --burst-distance: var(--burst-distance-big);
+  width: var(--burst-dot-big);
+  height: var(--burst-dot-big);
+  animation-duration: var(--duration-burst-big);
+}
 .burst span:nth-child(3n + 2) { background: var(--color-success); }
 .burst span:nth-child(3n) { background: var(--color-focus); }
 
@@ -142,6 +148,37 @@
   white-space: nowrap;
 }
 
+/* Secondary action: a soft pill. Works on <button> and <a>. */
+.quiet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap-target);
+  padding: 0 var(--space-4);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+}
+
+.quiet.danger { color: var(--color-danger); }
+.button.danger {
+  background: var(--color-danger);
+  color: var(--color-on-danger);
+}
+
+.sheet-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
 @media (hover: hover) {
   .button:hover { background: var(--color-muted); }
+  .button.danger:hover { background: var(--color-danger-hover); }
+  .quiet:hover { background: var(--color-surface-hover); }
 }

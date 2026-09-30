@@ -26,14 +26,16 @@ export function toast(message, action) {
   toastTimer = setTimeout(() => (region.innerHTML = ''), TOAST_MS)
 }
 
-const BURST_MS = 800
+const BURST_MS = 1200
 
 // Dots fly out from the middle of an element: the "done" moment.
-export function burst(fromEl, count = 14) {
+// { big: true } is for finishing a whole Project.
+export function burst(fromEl, { big = false } = {}) {
   if (!fromEl || reducedMotion()) return
+  const count = big ? 28 : 14
   const box = fromEl.getBoundingClientRect()
   const layer = document.createElement('div')
-  layer.className = 'burst'
+  layer.className = big ? 'burst is-big' : 'burst'
   layer.setAttribute('aria-hidden', 'true')
   layer.style.left = `${box.left + box.width / 2}px`
   layer.style.top = `${box.top + box.height / 2}px`

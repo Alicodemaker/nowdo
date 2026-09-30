@@ -84,15 +84,6 @@
   margin-top: var(--space-2);
 }
 
-.quiet {
-  min-height: var(--tap-target);
-  padding: 0 var(--space-4);
-  border: 0;
-  border-radius: var(--radius-pill);
-  background: var(--color-surface);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-}
 
 /* A new Now Step slides in after Done or Not now */
 .step-text.is-new {
@@ -105,13 +96,7 @@
 /* Nothing to do: invite the next move */
 .now-empty { align-items: flex-start; }
 .empty-hint { color: var(--color-muted); }
-.now-empty .quiet {
-  display: inline-flex;
-  align-items: center;
-  margin-top: var(--space-2);
-  color: var(--color-text);
-  text-decoration: none;
-}
+.now-empty .quiet { margin-top: var(--space-2); }
 
 /* Start: the arcade button. The ring around it becomes the 2-minute timer. */
 .start-zone {
@@ -206,7 +191,6 @@
 /* Hover feedback for mouse and trackpad users */
 @media (hover: hover) {
   .project-chip:hover,
-  .quiet:hover,
   .capture:hover { background: var(--color-surface-hover); }
   .start:hover { background: var(--color-primary-hover); }
   .done:hover { background: var(--color-success-hover); }
@@ -265,4 +249,11 @@
 }
 @media (hover: hover) {
   .move:hover { background: var(--color-surface-hover); }
+}
+
+/* Focus picker: a Project name with its steps left */
+.focus-choice {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
 }

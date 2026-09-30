@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import {
   createState, addProject, nowStep, markDone, undoDone, stepsToday,
   notNow, moveToTop, makeSmaller, capture, LOOSE_ENDS_ID,
-  setFocus, isFinished, editStep, deleteStep, deleteProject,
+  setFocus, isFinished, editStep, deleteStep, deleteProject, addStep,
 } from './store.js'
 
 test('a fresh state has an empty Loose ends project in focus, so Now is empty', () => {
@@ -156,4 +156,19 @@ test('a Project needs a name, and blank Steps are dropped', () => {
   state = addProject(state, { id: 'p', name: ' Clean flat ', steps: ['Dishes', ' ', ''] })
   assert.equal(state.projects[1].name, 'Clean flat')
   assert.deepEqual(openTexts(state, 'p'), ['Dishes'])
+})
+
+test('adding a Step puts it at the end of its Project', () => {
+  let state = addStep(taxes(), 'taxes', ' Submit it ')
+  assert.deepEqual(openTexts(state, 'taxes'), ['Find MitID', 'Log in to skat.dk', 'Check the numbers', 'Submit it'])
+  state = addStep(state, 'taxes', '  ')
+  assert.equal(openTexts(state, 'taxes').length, 4)
+})
+
+test('adding a Step to a Finished Project brings it back in progress', () => {
+  let state = taxes()
+  for (let i = 0; i < 3; i++) state = markDone(state, nowStep(state).step.id, new Date(2026, 8, 30, 10, i))
+  state = addStep(state, 'taxes', 'Save the receipt')
+  assert.equal(isFinished(state.projects[1]), false)
+  assert.equal(nowStep(state).step.text, 'Save the receipt')
 })

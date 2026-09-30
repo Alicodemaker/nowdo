@@ -1,6 +1,7 @@
 // The Now screen: one Step, a 2-minute Start, Done, Not now.
 import { nowStep, stepsToday, markDone, undoDone, notNow, isFinished, capture, makeSmaller } from './store.js'
 import { firstMoves } from './firstmoves.js'
+import { openFocusPicker } from './projects.js'
 import { esc, toast, burst, buzz, openSheet } from './ui.js'
 
 const START_MS = 2 * 60 * 1000
@@ -51,7 +52,11 @@ function emptyView(state, focus) {
       <section class="now-step now-empty">
         <h1 class="step-text">${finished ? `${esc(focus.name)} is finished.` : 'Nothing to do here yet.'}</h1>
         <p class="empty-hint">${finished ? 'Every step is done. Pick what to focus on next.' : 'Tap + to jot down a step, or start a project.'}</p>
-        <a class="quiet" href="#projects">${finished ? 'Pick your next focus' : 'Start a project'}</a>
+        ${
+          finished
+            ? '<button class="quiet" type="button" data-action="pick-focus">Pick your next focus</button>'
+            : '<a class="quiet" href="#projects">Start a project</a>'
+        }
       </section>
       <div class="now-bottom">${captureButton}</div>
     </div>`
@@ -77,14 +82,15 @@ function startZone() {
     </div>`
 }
 
-export function view(state, rerender) {
+export function view(app) {
+  const { state } = app
   const focus = state.projects.find((p) => p.id === state.focusId)
   const now = nowStep(state)
   if (!now) {
     lastStepId = null
     return emptyView(state, focus)
   }
-  syncTimer(now.step.id, rerender)
+  syncTimer(now.step.id, app.render)
   const isNew = lastStepId !== null && lastStepId !== now.step.id
   lastStepId = now.step.id
   return `
@@ -117,14 +123,24 @@ export const actions = {
     app.render()
   },
   done(app, button) {
-    const { step } = nowStep(app.state)
-    burst(button)
-    buzz([20, 40, 20])
-    app.commit(markDone(app.state, step.id))
+    const { step, project } = nowStep(app.state)
+    const next = markDone(app.state, step.id)
+    if (isFinished(next.projects.find((p) => p.id === project.id))) {
+      // The last Step of a Project: the bigger celebration.
+      burst(document.querySelector('.start'), { big: true })
+      buzz([40, 60, 40, 60, 120])
+    } else {
+      burst(button)
+      buzz([20, 40, 20])
+    }
+    app.commit(next)
     toast(`Done: ${step.text}`, { label: 'Undo', run: () => app.commit(undoDone(app.state, step.id)) })
   },
   'not-now'(app) {
     app.commit(notNow(app.state, nowStep(app.state).step.id))
+  },
+  'pick-focus'(app) {
+    openFocusPicker(app)
   },
   capture(app) {
     const sheet = openSheet(`

@@ -2,11 +2,20 @@ import './theme.css'
 import './base.css'
 import './ui.css'
 import './now.css'
+import './projects.css'
 import { load, save } from './storage.js'
 import * as now from './now.js'
+import * as projects from './projects.js'
+import * as project from './project.js'
 
 const root = document.getElementById('app')
-const screens = { now }
+const screens = { now, projects, project }
+
+// "#project/abc" → { name: 'project', param: 'abc' }. Unknown hashes show Now.
+function route() {
+  const [name, param] = location.hash.slice(1).split('/')
+  return screens[name] ? { name, param } : { name: 'now' }
+}
 
 const app = {
   state: load(),
@@ -17,23 +26,33 @@ const app = {
     app.render()
   },
   render() {
-    const name = location.hash.slice(1) in screens ? location.hash.slice(1) : 'now'
-    root.innerHTML = screens[name].view(app.state, app.render)
-    document.querySelectorAll('.tab').forEach((tab) => {
-      if (tab.getAttribute('href') === `#${name}`) tab.setAttribute('aria-current', 'page')
-      else tab.removeAttribute('aria-current')
+    const { name, param } = route()
+    root.innerHTML = screens[name].view(app, param)
+    const tab = name === 'project' ? 'projects' : name
+    document.querySelectorAll('.tab').forEach((link) => {
+      if (link.getAttribute('href') === `#${tab}`) link.setAttribute('aria-current', 'page')
+      else link.removeAttribute('aria-current')
     })
   },
 }
 
-// One click listener for the whole app: buttons name their action in data-action.
+// One listener each for clicks and forms: elements name their action in
+// data-action (buttons) or data-form (forms).
 root.addEventListener('click', (event) => {
   const el = event.target.closest('[data-action]')
-  const name = location.hash.slice(1) in screens ? location.hash.slice(1) : 'now'
-  screens[name].actions[el?.dataset.action]?.(app, el)
+  const { name, param } = route()
+  screens[name].actions[el?.dataset.action]?.(app, el, param)
+})
+root.addEventListener('submit', (event) => {
+  event.preventDefault()
+  const { name, param } = route()
+  screens[name].actions[event.target.dataset.form]?.(app, event.target, param)
 })
 
-window.addEventListener('hashchange', app.render)
+window.addEventListener('hashchange', () => {
+  app.render()
+  window.scrollTo(0, 0)
+})
 // Coming back to the app: the timer may have ended and midnight may have passed.
 document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && app.render())
 

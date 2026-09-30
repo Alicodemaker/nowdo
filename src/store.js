@@ -97,9 +97,13 @@ export function makeSmaller(state, text) {
   })
 }
 
-export function capture(state, text) {
+export function addStep(state, projectId, text) {
   if (!clean(text)) return state
-  return updateProject(state, LOOSE_ENDS_ID, (p) => ({ ...p, steps: [...p.steps, makeStep(clean(text))] }))
+  return updateProject(state, projectId, (p) => ({ ...p, steps: [...p.steps, makeStep(clean(text))] }))
+}
+
+export function capture(state, text) {
+  return addStep(state, LOOSE_ENDS_ID, text)
 }
 
 export function setFocus(state, projectId) {
