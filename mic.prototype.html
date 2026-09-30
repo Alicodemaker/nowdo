@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex" />
+    <title>Mic test prototype</title>
+  </head>
+  <body>
+    <!--
+      PROTOTYPE, throwaway. Lives only on branch prototype/local-ai; never merge.
+      Question: why does the Brain dump mic repeat words on Android ("so so I so I
+      need…"), and which way of listening gives clean text on the founder's phone?
+    -->
+    <main class="proto">
+      <p class="proto-flag">Prototype. Mic test only.</p>
+      <h1 class="screen-title">Mic test</h1>
+      <p class="proto-hint">Pick a way of listening, tap the mic, say one or two sentences, then tap to stop. Try the same sentences in each way and see which text comes out clean.</p>
+
+      <section class="proto-card" aria-labelledby="mode-title">
+        <h2 id="mode-title">Way of listening</h2>
+        <div class="modes" role="radiogroup" aria-labelledby="mode-title">
+          <label class="mode"><input type="radio" name="mode" value="A" checked /> <span><strong>A. Today's app.</strong> Keeps listening and adds every finished phrase.</span></label>
+          <label class="mode"><input type="radio" name="mode" value="B" /> <span><strong>B. Skip repeats.</strong> Keeps listening, but when a phrase just grows, it replaces the old one instead of adding it again.</span></label>
+          <label class="mode"><input type="radio" name="mode" value="C" /> <span><strong>C. One phrase at a time.</strong> Listens for one phrase, then quietly starts again until you stop.</span></label>
+        </div>
+        <label for="lang">Language</label>
+        <select id="lang">
+          <option value="en-GB" selected>English (UK)</option>
+          <option value="en-US">English (US)</option>
+          <option value="da-DK">Danish</option>
+        </select>
+      </section>
+
+      <div class="mic-zone" id="mic-zone">
+        <button class="mic" type="button" id="mic" aria-pressed="false">
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="40" height="40"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="visually-hidden" id="mic-label">Start listening</span>
+        </button>
+        <p class="mic-hint" id="mic-hint" aria-live="polite">Tap to talk.</p>
+      </div>
+
+      <section class="proto-card" aria-labelledby="text-title">
+        <h2 id="text-title">What it heard</h2>
+        <p class="proto-result" id="text"></p>
+        <p class="proto-status" id="interim" aria-hidden="true"></p>
+        <p class="proto-status" id="count"></p>
+        <button class="quiet" type="button" id="clear">Clear</button>
+      </section>
+
+      <section class="proto-card" aria-labelledby="log-title">
+        <h2 id="log-title">Event log</h2>
+        <p class="proto-hint">What the browser sent, event by event. If a way of listening looks wrong, tap Copy log and paste it to Claude.</p>
+        <button class="quiet" type="button" id="copy">Copy log</button>
+        <pre id="log"></pre>
+      </section>
+    </main>
+    <script type="module" src="/src/mic.prototype.js"></script>
+  </body>
+</html>
