@@ -81,11 +81,14 @@
   --start-depth: 8px;           /* how far Start sinks when pressed */
   --ring-gap: 0.625rem;         /* space between Start and its timer ring */
   --tabbar-height: 4rem;
+  --burst-dot: 0.625rem;
+  --burst-distance: 5rem;
 
   /* Motion */
   --duration-fast: 90ms;
   --duration: 220ms;
   --duration-start: 120s;       /* the 2-minute Start */
+  --duration-burst: 700ms;      /* keep in sync with BURST_MS in ui.js */
   --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }

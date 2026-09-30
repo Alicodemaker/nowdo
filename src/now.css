@@ -94,6 +94,25 @@
   font-weight: var(--font-weight-medium);
 }
 
+/* A new Now Step slides in after Done or Not now */
+.step-text.is-new {
+  animation: step-in var(--duration) var(--ease-out);
+}
+@keyframes step-in {
+  from { opacity: 0; transform: translateY(var(--space-4)); }
+}
+
+/* Nothing to do: invite the next move */
+.now-empty { align-items: flex-start; }
+.empty-hint { color: var(--color-muted); }
+.now-empty .quiet {
+  display: inline-flex;
+  align-items: center;
+  margin-top: var(--space-2);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
 /* Start: the arcade button. The ring around it becomes the 2-minute timer. */
 .start-zone {
   display: flex;
@@ -133,10 +152,14 @@
   box-shadow: 0 0 0 var(--color-edge);
 }
 
+.start-zone.is-ask .start-ring,
+.start-zone.is-flow .start-ring { --progress: 1; }
+
 .start-zone.is-running .start-ring {
   animation: start-countdown var(--duration-start) linear forwards;
 }
-.start-zone.is-running .start {
+.start-zone.is-running .start,
+.start-zone.is-flow .start {
   transform: translateY(calc(var(--start-depth) * 0.25));
   box-shadow: 0 calc(var(--start-depth) * 0.25) 0 var(--color-edge);
 }
