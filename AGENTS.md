@@ -14,6 +14,17 @@ See `BRIEF.md` for detail, `GLOSSARY.md` for terms, and `docs/adr/` for decision
 - **Look and feel:** bright and playful but restrained; warm, rounded, quick; light/dark follows the system; Start is the hero.
 - **Data:** Projects and Steps on the device only (ADR 0001). AI calls go straight to Claude with the person's own key, with no server (ADR 0002).
 
+## General rules
+
+- **Mobile-first.** Design for a ~390px wide phone screen first, then scale up. Tap targets are at least 44px. Respect safe areas.
+- **PWA that works offline.** The app must be installable and must load and work without a network. Anything new has to be cached by the service worker (`vite-plugin-pwa` in `vite.config.js`). If a feature needs the network, it fails gracefully offline.
+- **One theme file.** All colours, fonts and spacing live in `src/theme.css` as CSS variables. Components use only those variables and never hard-code values. If you need a new value, add it to the theme file first.
+- **Small commits.** Make one logical change per commit, with a plain one-line message. Push often.
+- **Keep it simple.** Add no dependency, abstraction or feature that the current plan doesn't need. When in doubt, leave it out.
+- **Stack.** Use Vite and `vite-plugin-pwa`, with plain JS/CSS by default. Add a UI framework only if a plan explicitly calls for one.
+- **Merge automatically.** When a pull request is ready (the fstack-check verdict is ready to push, the testing rules in the skill map are done, there are no open review comments, and GitHub says it can merge), merge it into `main` yourself without asking. Never merge `prototype/*` branches.
+- **Deploy.** Pushing to `main` deploys to GitHub Pages under `/<repo>/` (`.github/workflows/deploy.yml`). Never hard-code `/` as a root path: use relative paths or Vite's `import.meta.env.BASE_URL`.
+
 ## Agent skills
 
 ### Issue tracker
