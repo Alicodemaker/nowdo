@@ -1,0 +1,188 @@
+/* Shared UI pieces: toast and the done burst. Values come from theme.css only. */
+
+.toast-region {
+  position: fixed;
+  /* Just under the Now header, clear of every button */
+  inset: calc(max(var(--space-4), env(safe-area-inset-top)) + var(--tap-target) + var(--space-4)) 0 auto 0;
+  display: flex;
+  justify-content: center;
+  padding-inline: var(--space-4);
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  max-width: var(--content-max);
+  min-height: var(--tap-target);
+  padding: var(--space-1) var(--space-1) var(--space-1) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: var(--font-size-sm);
+  pointer-events: auto;
+  animation: toast-in var(--duration) var(--ease-bounce);
+}
+.toast span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.toast-action {
+  flex: none;
+  min-height: calc(var(--tap-target) - var(--space-2));
+  padding: 0 var(--space-4);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(calc(var(--space-4) * -1)); }
+}
+
+.burst {
+  position: fixed;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.burst span {
+  position: absolute;
+  left: calc(var(--burst-dot) / -2);
+  top: calc(var(--burst-dot) / -2);
+  width: var(--burst-dot);
+  height: var(--burst-dot);
+  border-radius: 50%;
+  background: var(--color-primary);
+  animation: burst-out var(--duration-burst) var(--ease-out) forwards;
+}
+.burst.is-big span {
+  --burst-distance: var(--burst-distance-big);
+  width: var(--burst-dot-big);
+  height: var(--burst-dot-big);
+  animation-duration: var(--duration-burst-big);
+}
+.burst span:nth-child(3n + 2) { background: var(--color-success); }
+.burst span:nth-child(3n) { background: var(--color-focus); }
+
+@keyframes burst-out {
+  from { transform: rotate(var(--angle)) translateX(0) scale(1); opacity: 1; }
+  to { transform: rotate(var(--angle)) translateX(var(--burst-distance)) scale(0.4); opacity: 0; }
+}
+
+/* Bottom sheet */
+.sheet {
+  width: 100%;
+  max-width: var(--content-max);
+  max-height: 90dvh;
+  margin: auto auto 0;
+  padding: var(--space-6) var(--space-5);
+  padding-bottom: max(var(--space-6), env(safe-area-inset-bottom));
+  border: 0;
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  overscroll-behavior: contain;
+  animation: sheet-in var(--duration) var(--ease-out);
+}
+.sheet::backdrop {
+  background: var(--color-backdrop);
+}
+
+@keyframes sheet-in {
+  from { transform: translateY(var(--space-8)); opacity: 0; }
+}
+
+.sheet-title {
+  margin: 0 0 var(--space-1);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+.sheet-hint {
+  margin-bottom: var(--space-4);
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+}
+
+/* One-line text field with its button */
+.field {
+  display: flex;
+  gap: var(--space-2);
+}
+.field input {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--tap-target);
+  padding: 0 var(--space-4);
+  border: var(--border-thin) solid var(--color-edge-soft);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+.field input::placeholder { color: var(--color-muted); }
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  min-height: var(--tap-target);
+  padding: 0 var(--space-5);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Secondary action: a soft pill. Works on <button> and <a>. */
+.quiet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap-target);
+  padding: 0 var(--space-4);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+}
+
+.quiet.danger { color: var(--color-danger); }
+.button.danger {
+  background: var(--color-danger);
+  color: var(--color-on-danger);
+}
+
+.sheet-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+@media (hover: hover) {
+  .button:hover { background: var(--color-muted); }
+  .button.danger:hover { background: var(--color-danger-hover); }
+  .quiet:hover { background: var(--color-surface-hover); }
+}

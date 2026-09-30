@@ -2,47 +2,131 @@
  * THE theme file. Every colour, font and spacing value in the app comes
  * from here. Components use these variables; they never hard-code values.
  *
- * Placeholder values. At kickoff, frontend-design replaces them with the
- * app's real style (see KICKOFF.md). After that, fstack-design keeps new
- * screens consistent with this file.
+ * Do Now: "the arcade button". Plum ink on lilac-white, one marigold
+ * Start button that you want to press. Mint means done. Everything
+ * else stays quiet.
+ *
+ * Lexend (SIL Open Font License) is self-hosted so it works offline.
  */
+@font-face {
+  font-family: 'Lexend';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('./fonts/lexend-latin.woff2') format('woff2');
+}
+
+@property --progress {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
 :root {
+  color-scheme: light dark;
+
   /* Colours */
-  --color-bg: #ffffff;
-  --color-surface: #f4f5f7;
-  --color-text: #1b1f24;
-  --color-muted: #5b636e;
-  --color-primary: #1f6feb;
-  --color-on-primary: #ffffff;
-  --color-danger: #d1242f;
+  --color-bg: #f6f3fb;          /* lilac-white page */
+  --color-surface: #ebe4f5;     /* chips, quiet buttons, tab bar */
+  --color-surface-hover: #ddd3ec;
+  --color-text: #2b1747;        /* plum ink */
+  --color-muted: #625379;       /* secondary text, 6.3:1 on bg */
+  --color-primary: #ffc23d;     /* marigold: the one big action (Start, mic) */
+  --color-primary-hover: #ffcd5e;
+  --color-on-primary: #2b1747;
+  --color-edge: #2b1747;        /* outline + pressed-depth of Start */
+  --color-success: #0f7d57;     /* done, timer ring */
+  --color-success-hover: #0b6b4a;
+  --color-on-success: #ffffff;
+  --color-track: #ddd3ec;       /* empty timer ring */
+  --color-focus: #6a3df0;       /* keyboard focus ring */
+  --color-edge-soft: #85759f;   /* text field outline, 3:1 on bg and surface */
+  --color-backdrop: rgb(43 23 71 / 0.45);
+  --color-danger: #b52340;
+  --color-danger-hover: #9a1b36;
+  --color-on-danger: #ffffff;
 
   /* Fonts */
-  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Lexend', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-heading: var(--font-body);
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
   --font-size-sm: 0.875rem;
   --font-size-md: 1rem;
   --font-size-lg: 1.25rem;
   --font-size-xl: 1.75rem;
+  --font-size-step: clamp(2rem, 8.5vw, 2.75rem); /* the Now Step text */
   --line-height: 1.5;
+  --line-height-tight: 1.15;
+  --letter-spacing-tight: -0.02em;
 
   /* Spacing (4px scale) */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
   --space-4: 1rem;
+  --space-5: 1.25rem;
   --space-6: 1.5rem;
   --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
 
   /* Shape */
-  --radius: 0.5rem;
+  --radius-sm: 0.75rem;
+  --radius: 1rem;
+  --radius-pill: 999px;
+  --border-thick: 3px;
+  --border-thin: 1.5px;
+  --focus-width: 3px;
   --tap-target: 44px;
+  --content-max: 30rem;
+  --start-size: min(58vw, 14rem);
+  --mic-size: 7rem;
+  --start-depth: 8px;           /* how far Start sinks when pressed */
+  --ring-gap: 0.625rem;         /* space between Start and its timer ring */
+  --tabbar-height: 4rem;
+  --burst-dot: 0.625rem;
+  --burst-distance: 5rem;
+  --burst-dot-big: 0.875rem;
+  --burst-distance-big: 11rem;
+
+  /* Motion */
+  --duration-fast: 90ms;
+  --duration: 220ms;
+  --duration-start: 120s;       /* the 2-minute Start */
+  --duration-burst: 700ms;      /* keep BURST_MS in ui.js longer than these */
+  --duration-burst-big: 1100ms;
+  --duration-pulse: 1600ms;     /* mic while listening */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #0d1117;
-    --color-surface: #161b22;
-    --color-text: #e6edf3;
-    --color-muted: #9198a1;
+    --color-bg: #1b1230;
+    --color-surface: #2a1d45;
+    --color-surface-hover: #382857;
+    --color-text: #f3eeff;
+    --color-muted: #b4a8cc;
+    --color-edge: #0a0614;
+    --color-success: #3fe0a6;
+    --color-success-hover: #6be9bb;
+    --color-on-success: #10301f;
+    --color-track: #34264f;
+    --color-focus: #b39bff;
+    --color-edge-soft: #7f6ea3;
+    --color-backdrop: rgb(10 6 20 / 0.7);
+    --color-danger: #ff6b81;
+    --color-danger-hover: #ff8fa0;
+    --color-on-danger: #2b0a12;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration: 0ms;
   }
 }

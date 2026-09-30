@@ -1,0 +1,63 @@
+// Small shared UI helpers: safe text, toasts, the done burst and vibration.
+
+const ENTITIES = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }
+export const esc = (text) => String(text).replace(/[&<>"']/g, (c) => ENTITIES[c])
+
+const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches
+
+export function buzz(pattern = 20) {
+  navigator.vibrate?.(pattern)
+}
+
+const TOAST_MS = 5000
+let toastTimer
+
+// Show a short message with an optional action, e.g. { label: 'Undo', run }.
+export function toast(message, action) {
+  const region = document.querySelector('.toast-region')
+  clearTimeout(toastTimer)
+  region.innerHTML = `<div class="toast"><span>${esc(message)}</span>${
+    action ? `<button class="toast-action" type="button">${esc(action.label)}</button>` : ''
+  }</div>`
+  region.querySelector('.toast-action')?.addEventListener('click', () => {
+    region.innerHTML = ''
+    action.run()
+  })
+  toastTimer = setTimeout(() => (region.innerHTML = ''), TOAST_MS)
+}
+
+const BURST_MS = 1200
+
+// Dots fly out from the middle of an element: the "done" moment.
+// { big: true } is for finishing a whole Project.
+export function burst(fromEl, { big = false } = {}) {
+  if (!fromEl || reducedMotion()) return
+  const count = big ? 28 : 14
+  const box = fromEl.getBoundingClientRect()
+  const layer = document.createElement('div')
+  layer.className = big ? 'burst is-big' : 'burst'
+  layer.setAttribute('aria-hidden', 'true')
+  layer.style.left = `${box.left + box.width / 2}px`
+  layer.style.top = `${box.top + box.height / 2}px`
+  for (let i = 0; i < count; i++) {
+    const dot = document.createElement('span')
+    dot.style.setProperty('--angle', `${(360 / count) * i}deg`)
+    layer.append(dot)
+  }
+  document.body.append(layer)
+  setTimeout(() => layer.remove(), BURST_MS)
+}
+
+// A bottom sheet built on <dialog>: focus stays inside, Escape closes it.
+// Returns the dialog so the caller can wire up its buttons and form.
+export function openSheet(html) {
+  const sheet = document.createElement('dialog')
+  sheet.className = 'sheet'
+  sheet.innerHTML = html
+  document.body.append(sheet)
+  sheet.addEventListener('close', () => sheet.remove())
+  // A tap on the dimmed area outside the sheet closes it.
+  sheet.addEventListener('click', (event) => event.target === sheet && sheet.close())
+  sheet.showModal()
+  return sheet
+}
