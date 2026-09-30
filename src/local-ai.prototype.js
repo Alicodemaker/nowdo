@@ -17,10 +17,10 @@ const STEPS_SYSTEM = `You turn a messy brain dump about a project into tiny next
 Each step is one concrete physical action that takes under 10 minutes and starts with a verb, like "Open the tax website" or "Find last year's letter".
 Keep the person's own specifics (names, websites, places, people). Leave out feelings, worries and filler.
 Put the steps in the order they should be done, and make the first one the easiest. Usually 3 to 8 steps.
-Answer only with JSON like {"steps": ["...", "..."]}.`
+Answer with only the steps, one per line. No numbers, no bullets, no other text.`
 
 const MOVE_SYSTEM = `Someone with ADHD is stuck on a step. Suggest the single tiniest physical movement that gets it started, something that takes under two minutes, like "Open your laptop and go to skat.dk".
-At most 10 words, starting with a verb. Answer only with JSON like {"move": "..."}.`
+At most 10 words, starting with a verb. Answer with only that one line.`
 
 const list = (el, items) => {
   el.replaceChildren(
@@ -88,7 +88,7 @@ function lostModel(error) {
   return `Failed: the model crashed. See step 2.`
 }
 
-async function ask(system, prompt, schema) {
+async function ask(system, prompt) {
   const started = performance.now()
   const reply = await engine.chat.completions.create({
     messages: [
@@ -96,12 +96,21 @@ async function ask(system, prompt, schema) {
       { role: 'user', content: prompt },
     ],
     temperature: 0.3,
-    max_tokens: 400,
-    response_format: { type: 'json_object', schema: JSON.stringify(schema) },
+    max_tokens: 300,
   })
   const text = reply.choices[0].message.content ?? ''
   return { text, seconds: ((performance.now() - started) / 1000).toFixed(1) }
 }
+
+// Lines of the answer, without "1.", "-", "*" or quotes in front.
+const answerLines = (text) =>
+  text
+    .split('\n')
+    .map((line) => line.replace(/^\s*(?:\d+[.)]|[-*•])\s*/, '').replace(/^["']|["']$/g, '').trim())
+    .filter(Boolean)
+
+// Only a real graphics-chip failure unloads the model; anything else is shown as is.
+const isCrash = (error) => /not loaded|mapAsync|GPU|device (was )?lost|disposed/i.test(error.message)
 
 // 3. Brain dump to steps, side by side with the offline splitter
 $('run-steps').addEventListener('click', async () => {
@@ -109,24 +118,13 @@ $('run-steps').addEventListener('click', async () => {
   list($('ai-steps'), ['Thinking…'])
   list($('split-steps'), splitBrainDump($('dump').value))
   try {
-    const schema = {
-      type: 'object',
-      properties: { steps: { type: 'array', items: { type: 'string' } } },
-      required: ['steps'],
-    }
-    const { text, seconds } = await ask(STEPS_SYSTEM, `Project: ${$('project').value}\n\nBrain dump:\n${$('dump').value}`, schema)
+    const { text, seconds } = await ask(STEPS_SYSTEM, `Project: ${$('project').value}\n\nBrain dump:\n${$('dump').value}`)
     $('raw').textContent = text
     $('ai-time').textContent = `${seconds} s, ${loadedModel.split('-Instruct')[0]}`
-    let steps
-    try {
-      steps = JSON.parse(text).steps ?? []
-    } catch {
-      steps = [`The model's answer wasn't valid JSON. See the raw answer below.`]
-    }
-    list($('ai-steps'), steps)
+    list($('ai-steps'), answerLines(text).slice(0, 10))
   } catch (error) {
-    list($('ai-steps'), [lostModel(error)])
-    return
+    list($('ai-steps'), [isCrash(error) ? lostModel(error) : `Failed: ${error.message}`])
+    if (isCrash(error)) return
   }
   $('run-steps').disabled = false
 })
@@ -136,18 +134,11 @@ $('run-move').addEventListener('click', async () => {
   $('run-move').disabled = true
   $('move-result').textContent = 'Thinking…'
   try {
-    const schema = { type: 'object', properties: { move: { type: 'string' } }, required: ['move'] }
-    const { text, seconds } = await ask(MOVE_SYSTEM, `Step: ${$('step').value}`, schema)
-    let move
-    try {
-      move = JSON.parse(text).move
-    } catch {
-      move = text
-    }
-    $('move-result').textContent = `${move} (${seconds} s)`
+    const { text, seconds } = await ask(MOVE_SYSTEM, `Step: ${$('step').value}`)
+    $('move-result').textContent = `${answerLines(text)[0] ?? '(empty answer)'} (${seconds} s)`
   } catch (error) {
-    $('move-result').textContent = lostModel(error)
-    return
+    $('move-result').textContent = isCrash(error) ? lostModel(error) : `Failed: ${error.message}`
+    if (isCrash(error)) return
   }
   $('run-move').disabled = false
 })
