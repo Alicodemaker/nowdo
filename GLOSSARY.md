@@ -24,6 +24,10 @@ _Avoid_: Inbox, misc, uncategorised
 The one Project the person has chosen to work on right now. There is only ever one.
 _Avoid_: Active project, current project
 
+**Brain dump**:
+Free-form text about a Project, typed or spoken, which the app turns into Steps the person reviews before they are saved.
+_Avoid_: Ramble, transcript, notes, braindump
+
 ## Starting
 
 **Now**:
