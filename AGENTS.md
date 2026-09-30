@@ -4,25 +4,15 @@ This is the only rules file for this repo. `CLAUDE.md` points here, and rules mu
 
 ## Project brief
 
-_Not filled in yet. KICKOFF.md fills this in from BRIEF.md._
+See `BRIEF.md` for detail, `GLOSSARY.md` for terms, and `docs/adr/` for decisions.
 
-- **App:** _name and one-line description_
-- **For:** _who uses it_
-- **Main problem:** _what it solves_
-- **Version 1 must:** _core features_
-- **Version 1 must NOT:** _out of scope_
-- **Look and feel:** _style in a few words_
-- **Data:** _what it stores and where_
-
-## General rules
-
-- **Mobile-first.** Design for a ~390px wide phone screen first, then scale up. Tap targets are at least 44px. Respect safe areas.
-- **PWA that works offline.** The app must be installable and must load and work without a network. Anything new has to be cached by the service worker (`vite-plugin-pwa` in `vite.config.js`). If a feature needs the network, it fails gracefully offline.
-- **One theme file.** All colours, fonts and spacing live in `src/theme.css` as CSS variables. Components use only those variables and never hard-code values. If you need a new value, add it to the theme file first.
-- **Small commits.** Make one logical change per commit, with a plain one-line message. Push often.
-- **Keep it simple.** Add no dependency, abstraction or feature that the current plan doesn't need. When in doubt, leave it out.
-- **Stack.** Use Vite and `vite-plugin-pwa`, with plain JS/CSS by default. Add a UI framework only if a plan explicitly calls for one.
-- **Deploy.** Pushing to `main` deploys to GitHub Pages under `/<repo>/` (`.github/workflows/deploy.yml`). Never hard-code `/` as a root path: use relative paths or Vite's `import.meta.env.BASE_URL`.
+- **App:** Do Now: a phone-first, offline todo app that makes *starting* effortless for people with ADHD.
+- **For:** the founder, an adult with ADHD and executive dysfunction who has quit every todo app they've tried.
+- **Main problem:** starting, not listing. Big tasks cause freezing, and full-featured apps cost energy the person doesn't have.
+- **Version 1 must:** have a Now screen (one Step, a 2-minute Start, Done, Make it smaller, Not now, Switch project, quick capture to Loose ends); Projects with a spoken or typed Brain dump turned into Steps (by Claude, or an offline splitter) that are reviewed before saving; edit, delete and move-to-top for Steps; a burst, vibration and "Steps today" on done; Settings with API key and Export/Import backup.
+- **Version 1 must NOT:** have due dates, priorities, tags, reminders, streaks, points, sound, accounts, sync, nested steps, drag-reorder, a second language, or nagging or shame.
+- **Look and feel:** bright and playful but restrained; warm, rounded, quick; light/dark follows the system; Start is the hero.
+- **Data:** Projects and Steps on the device only (ADR 0001). AI calls go straight to Claude with the person's own key, with no server (ADR 0002).
 
 ## Agent skills
 
