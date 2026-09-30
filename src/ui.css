@@ -69,3 +69,79 @@
   from { transform: rotate(var(--angle)) translateX(0) scale(1); opacity: 1; }
   to { transform: rotate(var(--angle)) translateX(var(--burst-distance)) scale(0.4); opacity: 0; }
 }
+
+/* Bottom sheet */
+.sheet {
+  width: 100%;
+  max-width: var(--content-max);
+  max-height: 90dvh;
+  margin: auto auto 0;
+  padding: var(--space-6) var(--space-5);
+  padding-bottom: max(var(--space-6), env(safe-area-inset-bottom));
+  border: 0;
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  overscroll-behavior: contain;
+  animation: sheet-in var(--duration) var(--ease-out);
+}
+.sheet::backdrop {
+  background: var(--color-backdrop);
+}
+
+@keyframes sheet-in {
+  from { transform: translateY(var(--space-8)); opacity: 0; }
+}
+
+.sheet-title {
+  margin: 0 0 var(--space-1);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+.sheet-hint {
+  margin-bottom: var(--space-4);
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+}
+
+/* One-line text field with its button */
+.field {
+  display: flex;
+  gap: var(--space-2);
+}
+.field input {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--tap-target);
+  padding: 0 var(--space-4);
+  border: var(--border-thin) solid var(--color-edge-soft);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+.field input::placeholder { color: var(--color-muted); }
+
+.button {
+  flex: none;
+  min-height: var(--tap-target);
+  padding: 0 var(--space-5);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-weight: var(--font-weight-bold);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (hover: hover) {
+  .button:hover { background: var(--color-muted); }
+}

@@ -40,6 +40,8 @@
   --color-on-success: #ffffff;
   --color-track: #ddd3ec;       /* empty timer ring */
   --color-focus: #6a3df0;       /* keyboard focus ring */
+  --color-edge-soft: #85759f;   /* text field outline, 3:1 on bg and surface */
+  --color-backdrop: rgb(43 23 71 / 0.45);
   --color-danger: #c42b45;
 
   /* Fonts */
@@ -74,6 +76,7 @@
   --radius: 1rem;
   --radius-pill: 999px;
   --border-thick: 3px;
+  --border-thin: 1.5px;
   --focus-width: 3px;
   --tap-target: 44px;
   --content-max: 30rem;
@@ -106,6 +109,8 @@
     --color-on-success: #10301f;
     --color-track: #34264f;
     --color-focus: #b39bff;
+    --color-edge-soft: #7f6ea3;
+    --color-backdrop: rgb(10 6 20 / 0.7);
     --color-danger: #ff6b81;
   }
 }

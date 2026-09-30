@@ -45,3 +45,17 @@ export function burst(fromEl, count = 14) {
   document.body.append(layer)
   setTimeout(() => layer.remove(), BURST_MS)
 }
+
+// A bottom sheet built on <dialog>: focus stays inside, Escape closes it.
+// Returns the dialog so the caller can wire up its buttons and form.
+export function openSheet(html) {
+  const sheet = document.createElement('dialog')
+  sheet.className = 'sheet'
+  sheet.innerHTML = html
+  document.body.append(sheet)
+  sheet.addEventListener('close', () => sheet.remove())
+  // A tap on the dimmed area outside the sheet closes it.
+  sheet.addEventListener('click', (event) => event.target === sheet && sheet.close())
+  sheet.showModal()
+  return sheet
+}

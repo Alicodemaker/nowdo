@@ -1,6 +1,7 @@
 // The Now screen: one Step, a 2-minute Start, Done, Not now.
-import { nowStep, stepsToday, markDone, undoDone, notNow, isFinished } from './store.js'
-import { esc, toast, burst, buzz } from './ui.js'
+import { nowStep, stepsToday, markDone, undoDone, notNow, isFinished, capture, makeSmaller } from './store.js'
+import { firstMoves } from './firstmoves.js'
+import { esc, toast, burst, buzz, openSheet } from './ui.js'
 
 const START_MS = 2 * 60 * 1000
 
@@ -124,5 +125,51 @@ export const actions = {
   },
   'not-now'(app) {
     app.commit(notNow(app.state, nowStep(app.state).step.id))
+  },
+  capture(app) {
+    const sheet = openSheet(`
+      <form class="sheet-form">
+        <h2 class="sheet-title" id="sheet-title">Jot it down</h2>
+        <p class="sheet-hint">It goes to Loose ends, so you can get back to what you were doing.</p>
+        <div class="field">
+          <label class="visually-hidden" for="capture-text">New step</label>
+          <input id="capture-text" name="text" autocomplete="off" enterkeyhint="done" maxlength="200" placeholder="Buy milk…" />
+          <button class="button" type="submit">Add</button>
+        </div>
+      </form>`)
+    sheet.setAttribute('aria-labelledby', 'sheet-title')
+    sheet.querySelector('form').addEventListener('submit', (event) => {
+      event.preventDefault()
+      const text = event.target.elements.text.value
+      if (!text.trim()) return
+      app.commit(capture(app.state, text))
+      sheet.close()
+      toast('Added to Loose ends')
+    })
+  },
+  smaller(app) {
+    const moves = firstMoves(nowStep(app.state).step.text)
+    const sheet = openSheet(`
+      <h2 class="sheet-title" id="sheet-title">Make it smaller</h2>
+      <p class="sheet-hint">What’s the very first movement? Tap one, or type your own.</p>
+      <ul class="moves">
+        ${moves.map((move) => `<li><button class="move" type="button">${esc(move)}</button></li>`).join('')}
+      </ul>
+      <form class="sheet-form field">
+        <label class="visually-hidden" for="own-move">Your own first move</label>
+        <input id="own-move" name="text" autocomplete="off" enterkeyhint="done" maxlength="200" placeholder="Type your own…" />
+        <button class="button" type="submit">Add</button>
+      </form>`)
+    sheet.setAttribute('aria-labelledby', 'sheet-title')
+    const add = (text) => {
+      if (!text.trim()) return
+      app.commit(makeSmaller(app.state, text))
+      sheet.close()
+    }
+    sheet.querySelectorAll('.move').forEach((button) => button.addEventListener('click', () => add(button.textContent)))
+    sheet.querySelector('form').addEventListener('submit', (event) => {
+      event.preventDefault()
+      add(event.target.elements.text.value)
+    })
   },
 }
