@@ -1,4 +1,4 @@
-# nowdo
+# Do Now
 
 A todo app for people with ADHD and executive dysfunction. It exists to make *starting* easy: one tiny thing on screen, one tap to begin.
 
@@ -11,6 +11,10 @@ _Avoid_: Goal, list, task
 **Step**:
 One tiny, concrete action inside a Project, such as "Open the tax website". Steps never contain other Steps.
 _Avoid_: Task, sub-task, item, todo
+
+**Finished**:
+The state of a Project once every one of its Steps is done. It is kept apart from Projects still in progress.
+_Avoid_: Archived, completed, closed
 
 **Loose ends**:
 The built-in Project that always exists. It holds Steps that belong to no other Project.
@@ -31,7 +35,7 @@ Committing to work on the Now Step for just two minutes, after which the person 
 _Avoid_: Pomodoro, session, sprint
 
 **Make it smaller**:
-Adding a tinier Step directly before the Now Step, so the first movement is effortless.
+Adding a tinier Step directly before the Now Step, so the first movement is effortless. The app offers ready-made first moves, such as "Open your PC", and the person can also type their own.
 _Avoid_: Break down, split, decompose
 
 **Not now**:
