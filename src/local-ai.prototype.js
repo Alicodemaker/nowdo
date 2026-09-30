@@ -34,6 +34,10 @@ async function showFacts() {
   if (navigator.gpu) {
     const adapter = await navigator.gpu.requestAdapter().catch(() => null)
     facts.push(['Graphics chip found', adapter ? 'yes' : 'no'])
+    if (adapter) {
+      facts.push(['Chip', [adapter.info?.vendor, adapter.info?.architecture].filter(Boolean).join(' ') || 'not reported'])
+      facts.push(['Supports f16 models', adapter.features.has('shader-f16') ? 'yes' : 'no, so use an f32 model'])
+    }
   }
   facts.push(['Memory hint', navigator.deviceMemory ? `${navigator.deviceMemory} GB or more` : 'not reported'])
   facts.push(['Browser', navigator.userAgent.replace(/^Mozilla\/5.0 /, '')])
@@ -73,6 +77,17 @@ $('load').addEventListener('click', async () => {
   }
 })
 
+// When the phone's graphics chip drops the model mid-answer, WebLLM unloads it.
+// Say so plainly and make the next tap load it again.
+function lostModel(error) {
+  engine = null
+  loadedModel = ''
+  $('run-steps').disabled = true
+  $('run-move').disabled = true
+  $('load-status').textContent = `The graphics chip dropped the model (${error.message}). Try an f32 model, then tap Download and load. Downloaded models load from the phone.`
+  return `Failed: the model crashed. See step 2.`
+}
+
 async function ask(system, prompt, schema) {
   const started = performance.now()
   const reply = await engine.chat.completions.create({
@@ -110,10 +125,10 @@ $('run-steps').addEventListener('click', async () => {
     }
     list($('ai-steps'), steps)
   } catch (error) {
-    list($('ai-steps'), [`Failed: ${error.message}`])
-  } finally {
-    $('run-steps').disabled = false
+    list($('ai-steps'), [lostModel(error)])
+    return
   }
+  $('run-steps').disabled = false
 })
 
 // 4. One tiny first move
@@ -131,10 +146,10 @@ $('run-move').addEventListener('click', async () => {
     }
     $('move-result').textContent = `${move} (${seconds} s)`
   } catch (error) {
-    $('move-result').textContent = `Failed: ${error.message}`
-  } finally {
-    $('run-move').disabled = false
+    $('move-result').textContent = lostModel(error)
+    return
   }
+  $('run-move').disabled = false
 })
 
 $('dump').addEventListener('input', () => list($('split-steps'), splitBrainDump($('dump').value)))
