@@ -8,9 +8,10 @@ import * as now from './now.js'
 import * as projects from './projects.js'
 import * as project from './project.js'
 import * as newProject from './new.js'
+import * as settings from './settings.js'
 
 const root = document.getElementById('app')
-const screens = { now, projects, project, new: newProject }
+const screens = { now, projects, project, new: newProject, settings }
 
 // "#project/abc" → { name: 'project', param: 'abc' }. Unknown hashes show Now.
 function route() {
@@ -29,7 +30,7 @@ const app = {
   render() {
     const { name, param } = route()
     root.innerHTML = screens[name].view(app, param)
-    const tab = name === 'project' || name === 'new' ? 'projects' : name
+    const tab = name === 'now' ? 'now' : 'projects'
     document.querySelectorAll('.tab').forEach((link) => {
       if (link.getAttribute('href') === `#${tab}`) link.setAttribute('aria-current', 'page')
       else link.removeAttribute('aria-current')
@@ -37,8 +38,8 @@ const app = {
   },
 }
 
-// One listener each for clicks and forms: elements name their action in
-// data-action (buttons) or data-form (forms).
+// One listener each for clicks, forms and file pickers: elements name their
+// action in data-action (buttons), data-form (forms) or data-change (inputs).
 root.addEventListener('click', (event) => {
   const el = event.target.closest('[data-action]')
   const { name, param } = route()
@@ -48,6 +49,11 @@ root.addEventListener('submit', (event) => {
   event.preventDefault()
   const { name, param } = route()
   screens[name].actions[event.target.dataset.form]?.(app, event.target, param)
+})
+
+root.addEventListener('change', (event) => {
+  const { name, param } = route()
+  screens[name].actions[event.target.dataset.change]?.(app, event.target, param)
 })
 
 window.addEventListener('hashchange', () => {

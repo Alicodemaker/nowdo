@@ -2,7 +2,8 @@
 import { addProject } from './store.js'
 import { splitBrainDump } from './braindump.js'
 import { canListen, listen } from './speech.js'
-import { esc } from './ui.js'
+import { canUseClaude, stepsFromBrainDump, ClaudeError } from './claude.js'
+import { esc, toast } from './ui.js'
 
 // The draft lives in memory, so switching tabs mid-way keeps it.
 const emptyDraft = () => ({ stage: 'name', name: '', dump: '', steps: [] })
@@ -152,10 +153,23 @@ export const actions = {
     })
     app.render()
   },
-  dump(app, form) {
+  async dump(app, form) {
     stopMic()
     draft.dump = form.elements.dump.value
-    draft.steps = splitBrainDump(draft.dump)
+    if (canUseClaude() && draft.dump.trim()) {
+      const button = form.querySelector('[type="submit"]')
+      button.disabled = true
+      button.textContent = 'Making tiny steps…'
+      try {
+        draft.steps = await stepsFromBrainDump(draft.name, draft.dump)
+      } catch (error) {
+        draft.steps = splitBrainDump(draft.dump)
+        const reason = error instanceof ClaudeError ? error.message : 'Claude couldn’t help this time.'
+        toast(`${reason} These steps were made offline.`)
+      }
+    } else {
+      draft.steps = splitBrainDump(draft.dump)
+    }
     draft.stage = 'review'
     app.render()
   },

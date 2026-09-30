@@ -28,7 +28,12 @@ export function view(app) {
     <div class="screen">
       <header class="screen-top">
         <h1 class="screen-title">Projects</h1>
-        <a class="button" href="#new">New project</a>
+        <div class="screen-actions">
+          <a class="icon-link" href="#settings" aria-label="Settings">
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="7" r="2.25" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="8" cy="17" r="2.25" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+          </a>
+          <a class="button" href="#new">New project</a>
+        </div>
       </header>
       <ul class="project-list">${active.map((p) => row(state, p)).join('')}</ul>
       ${

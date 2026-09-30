@@ -257,3 +257,13 @@
   justify-content: space-between;
   gap: var(--space-3);
 }
+.move-waiting {
+  display: flex;
+  align-items: center;
+  min-height: var(--tap-target);
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-thin) dashed var(--color-edge-soft);
+  border-radius: var(--radius-sm);
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+}

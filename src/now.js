@@ -2,6 +2,7 @@
 import { nowStep, stepsToday, markDone, undoDone, notNow, isFinished, capture, makeSmaller } from './store.js'
 import { firstMoves } from './firstmoves.js'
 import { openFocusPicker } from './projects.js'
+import { canUseClaude, tinyFirstMove } from './claude.js'
 import { esc, toast, burst, buzz, openSheet } from './ui.js'
 
 const START_MS = 2 * 60 * 1000
@@ -164,7 +165,8 @@ export const actions = {
     })
   },
   smaller(app) {
-    const moves = firstMoves(nowStep(app.state).step.text)
+    const { step, project } = nowStep(app.state)
+    const moves = firstMoves(step.text)
     const sheet = openSheet(`
       <h2 class="sheet-title" id="sheet-title">Make it smaller</h2>
       <p class="sheet-hint">What’s the very first movement? Tap one, or type your own.</p>
@@ -187,5 +189,19 @@ export const actions = {
       event.preventDefault()
       add(event.target.elements.text.value)
     })
+    // With a key and a connection, Claude adds one tailored first move on top.
+    if (canUseClaude()) {
+      const slot = document.createElement('li')
+      slot.className = 'move-waiting'
+      slot.textContent = 'Asking Claude for a first move…'
+      sheet.querySelector('.moves').prepend(slot)
+      tinyFirstMove(step.text, project.name)
+        .then((move) => {
+          slot.className = ''
+          slot.innerHTML = `<button class="move" type="button">${esc(move)}</button>`
+          slot.querySelector('button').addEventListener('click', () => add(move))
+        })
+        .catch(() => slot.remove())
+    }
   },
 }
