@@ -30,6 +30,7 @@ const app = {
   render() {
     const { name, param } = route()
     root.innerHTML = screens[name].view(app, param)
+    screens[name].mounted?.(root)
     const tab = name === 'now' ? 'now' : 'projects'
     document.querySelectorAll('.tab').forEach((link) => {
       if (link.getAttribute('href') === `#${tab}`) link.setAttribute('aria-current', 'page')

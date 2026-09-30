@@ -20,6 +20,7 @@ function keySection() {
              </form>
              <p class="section-hint">Get a key at <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener" translate="no">console.anthropic.com</a>.</p>`
       }
+      <p class="section-hint">To stay safe, make a separate key just for Do Now in its own Console workspace with a low monthly spend limit. If you lose this phone, delete that key.</p>
     </section>`
 }
 
